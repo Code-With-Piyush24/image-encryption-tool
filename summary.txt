@@ -1,0 +1,45 @@
+# Image Encryption and Decryption using Python 🛡️
+
+## 📌 Project Summary
+
+This project demonstrates a simple yet effective method of encrypting and decrypting digital images using Python and the Pillow (PIL) library. The approach involves pixel-level manipulation, specifically through two techniques:
+
+1. **Color Channel Swapping** – Red and Blue channels are interchanged.
+2. **Mathematical Transformation** – Each pixel's RGB values are altered using a user-defined key.
+
+These methods provide a basic understanding of how image data can be secured or obfuscated, which is fundamental in the field of Cybersecurity.
+
+---
+
+## 🔧 Features
+
+- Encrypt images using simple pixel transformations
+- Decrypt back to the original image using the same method/key
+- Supports RGB PNG images
+- Beginner-friendly, with clear structure and instructions
+
+---
+
+## 📂 Files Included
+
+- `main.py` – The core Python script containing the logic
+- `sample_input_output.txt` – Demonstration of input/output format and results
+- `summary.txt` – Professional overview of the project
+
+---
+
+## 👨‍💻 Author
+
+**Name:** Piyush Kumar  
+**Track:** Cybersecurity  
+**Internship:** SkillCraft Technology  
+**Year:** 2025  
+
+---
+
+## 📬 Contact
+
+For suggestions or queries, feel free to connect via GitHub or LinkedIn.
+
+---
+
