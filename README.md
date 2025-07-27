@@ -1,8 +1,7 @@
 # 🔐 Image Encryption Tool – Pixel-Level Security in Python
 
 **SkillCraft Cybersecurity Internship – Task 2**  
-**Author:** Piyush Kumar 
-
+**Author:** Piyush Kumar  
 **Domain:** Cybersecurity
 
 ---
