@@ -1,0 +1,56 @@
+# 🔒 Image Encryption & Decryption - Sample Input/Output
+
+This project shows how to encrypt and decrypt images using basic pixel manipulation with Python and PIL (Pillow).
+
+---
+
+🧪 Example 1: Using "swap" method
+----------------------------------
+
+Input Image:
+  - File: input.png
+  - Description: Any PNG image with RGB color.
+
+Encryption Command:
+  encrypt_image("input.png", "encrypted_swap.png", "swap")
+
+Decryption Command:
+  decrypt_image("encrypted_swap.png", "decrypted_swap.png", "swap")
+
+Output Files:
+  - encrypted_swap.png → red and blue channels are swapped.
+  - decrypted_swap.png → should look exactly like the original image.
+
+✅ Sample Console Output:
+  🔁 Using 'swap' method...
+  ✅ Image encrypted successfully! Saved to: encrypted_swap.png 🔐
+  ✅ Image decrypted successfully! Saved to: decrypted_swap.png 🔓
+
+---
+
+🧪 Example 2: Using "math" method with key = 50
+------------------------------------------------
+
+Input Image:
+  - File: input.png
+  - Description: Same input image used above.
+
+Encryption Command:
+  encrypt_image("input.png", "encrypted_math.png", "math", key=50)
+
+Decryption Command:
+  decrypt_image("encrypted_math.png", "decrypted_math.png", "math", key=50)
+
+Output Files:
+  - encrypted_math.png → each color value shifted by +50 (wrapped at 256).
+  - decrypted_math.png → original image restored by subtracting the key.
+
+✅ Sample Console Output:
+  ➕ Using 'math' method with key = 50
+  ✅ Image encrypted successfully! Saved to: encrypted_math.png 🔐
+  ✅ Image decrypted successfully! Saved to: decrypted_math.png 🔓
+
+---
+
+🎉 End of Sample
+Make sure `input.png` is in your project folder when running the code.
