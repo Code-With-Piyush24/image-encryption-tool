@@ -9,88 +9,85 @@ Pixel Swapping – Performs adjacent pixel value swaps to lightly obfuscate the 
 Mathematical Transformation – Applies a reversible mathematical operation to each pixel, offering an additional layer of basic encryption.
 
 from PIL import Image
-import numpy as np
-import argparse
 
+def encrypt_image(image_path, output_path, operation_type, key=None):
+    """
+    🔒 Encrypt an image by changing its pixels.
 
-def encrypt_image(image_path, output_path, method="swap"):
-    image = Image.open(image_path).convert("RGB")
-    pixels = np.array(image)
+    Args:
+        image_path (str): Path to the original image.
+        output_path (str): Where to save the encrypted image.
+        operation_type (str): 'swap' to swap colors, or 'math' to modify color values.
+        key (int, optional): A number used only if 'math' is selected.
+    """
+    img = Image.open(image_path)
+    pixels = img.load()
+    width, height = img.size
 
-    if method == "swap":
-        encrypted_pixels = swap_pixels(pixels)
-    elif method == "math":
-        encrypted_pixels = math_operation(pixels)
+    if operation_type == 'swap':
+        for y in range(height):
+            for x in range(width):
+                r, g, b = pixels[x, y]
+                pixels[x, y] = (b, g, r)
+    elif operation_type == 'math':
+        if key is None:
+            raise ValueError("⚠️ You need to provide a key when using 'math' operation.")
+        for y in range(height):
+            for x in range(width):
+                r, g, b = pixels[x, y]
+                pixels[x, y] = ((r + key) % 256, (g + key) % 256, (b + key) % 256)
     else:
-        raise ValueError("Choose 'swap' or 'math' as method.")
+        raise ValueError("❌ Invalid operation_type. Use 'swap' or 'math'.")
 
-    Image.fromarray(encrypted_pixels.astype("uint8"), "RGB").save(output_path)
-    print(f"✅ Encryption successful! Saved to: {output_path}")
+    img.save(output_path)
+    print(f"✅ Image encrypted successfully! Saved to: {output_path} 🔐")
 
+def decrypt_image(image_path, output_path, operation_type, key=None):
+    """
+    🔓 Decrypt an image back to its original form.
 
-def decrypt_image(image_path, output_path, method="swap"):
-    image = Image.open(image_path).convert("RGB")
-    pixels = np.array(image)
+    Args:
+        image_path (str): Path to the encrypted image.
+        output_path (str): Where to save the decrypted image.
+        operation_type (str): 'swap' or 'math' (must match encryption).
+        key (int, optional): The same number used for 'math' encryption.
+    """
+    img = Image.open(image_path)
+    pixels = img.load()
+    width, height = img.size
 
-    if method == "swap":
-        decrypted_pixels = swap_pixels(pixels)  # swap is reversible
-    elif method == "math":
-        decrypted_pixels = reverse_math_operation(pixels)
+    if operation_type == 'swap':
+        for y in range(height):
+            for x in range(width):
+                b, g, r = pixels[x, y]
+                pixels[x, y] = (r, g, b)
+    elif operation_type == 'math':
+        if key is None:
+            raise ValueError("⚠️ You need to provide the key used during encryption.")
+        for y in range(height):
+            for x in range(width):
+                r, g, b = pixels[x, y]
+                pixels[x, y] = ((r - key) % 256, (g - key) % 256, (b - key) % 256)
     else:
-        raise ValueError("Choose 'swap' or 'math' as method.")
+        raise ValueError("❌ Invalid operation_type. Use 'swap' or 'math'.")
 
-    Image.fromarray(decrypted_pixels.astype("uint8"), "RGB").save(output_path)
-    print(f"🔓 Decryption successful! Saved to: {output_path}")
-
-
-def swap_pixels(pixels):
-    swapped = pixels.copy()
-    rows, cols, _ = pixels.shape
-    for i in range(rows):
-        for j in range(0, cols - 1, 2):
-            swapped[i, j], swapped[i, j + 1] = (
-                swapped[i, j + 1],
-                swapped[i, j],
-            )  # Swapping horizontally
-    return swapped
+    img.save(output_path)
+    print(f"✅ Image decrypted successfully! Saved to: {output_path} 🔓")
 
 
-def math_operation(pixels):
-    constant = 37
-    return (pixels + constant) % 256
-
-
-def reverse_math_operation(pixels):
-    constant = 37
-    return (pixels - constant) % 256
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="🖼️ Simple Image Encryption/Decryption Tool"
-    )
-    parser.add_argument(
-        "mode",
-        choices=["encrypt", "decrypt"],
-        help="Choose to encrypt or decrypt an image.",
-    )
-    parser.add_argument("input", help="Path to the input image file.")
-    parser.add_argument("output", help="Path to save the output image file.")
-    parser.add_argument(
-        "--method",
-        choices=["swap", "math"],
-        default="swap",
-        help="Choose encryption method: 'swap' or 'math'.",
-    )
-
-    args = parser.parse_args()
-
-    print("🔐 Processing...")
-    if args.mode == "encrypt":
-        encrypt_image(args.input, args.output, args.method)
-    else:
-        decrypt_image(args.input, args.output, args.method)
-
-
+# 🧪 Example usage
 if __name__ == "__main__":
-    main()
+    print("🔄 Starting image encryption and decryption examples...\n")
+
+    # Example 1: Swap method
+    print("🔁 Using 'swap' method...")
+    encrypt_image("input.png", "encrypted_swap.png", "swap")
+    decrypt_image("encrypted_swap.png", "decrypted_swap.png", "swap")
+
+    # Example 2: Math method
+    encryption_key = 50
+    print("\n➕ Using 'math' method with key =", encryption_key)
+    encrypt_image("input.png", "encrypted_math.png", "math", key=encryption_key)
+    decrypt_image("encrypted_math.png", "decrypted_math.png", "math", key=encryption_key)
+
+    print("\n🎉 All done! Check your output images.")
